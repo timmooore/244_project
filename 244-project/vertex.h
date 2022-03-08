@@ -11,6 +11,7 @@
 class vertex {
 	int data;
 };
+//fuck you asshole
 
 
 #endif /* VERTEX_H_ */
