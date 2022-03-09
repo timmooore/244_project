@@ -16,7 +16,6 @@ public:
 	// I think I figured it out
 
 };
-//fuck you asshole
 
 
 
