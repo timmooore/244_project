@@ -9,7 +9,10 @@
 #define VERTEX_H_
 
 class vertex {
+private:
 	int data;
+public:
+	int getData() const;
 	// I think I figured it out
 
 };
