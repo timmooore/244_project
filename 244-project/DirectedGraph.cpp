@@ -211,8 +211,8 @@ bool DirectedGraph::operator==(const DirectedGraph &dg) {
 		return false;
 	if (no_edges != dg.getNoEdges())
 		return false;
-	bool vertex_present[no_vertices];
-	bool edge_present[no_edges];
+	bool vertex_present[MAX_NO_VERTICES];
+	bool edge_present[MAX_NO_EDGES];
 	for (int i = 0; i < no_vertices; ++i)
 		vertex_present[i] = false;
 	for (int i = 0; i < no_edges; ++i)
