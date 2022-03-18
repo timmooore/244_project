@@ -59,7 +59,6 @@ bool DirectedGraph::searchEdge(const Edge &e) {
 bool DirectedGraph::removeVertex(Vertex &v) {
 	if (searchVertex(v) == false)
 		return false;
-	cout << "Vertex found..." << endl;
 	int index = 0;
 	for (; index < no_vertices; ++index) {
 		if (nodes[index]->getValue() == v.getValue()) {
@@ -109,6 +108,7 @@ void DirectedGraph::display() const {
 	edges[no_edges - 1]->print();
 	cout << "}" << endl;
 }
+
 // Need to fix so that it doesn't add cycles
 bool DirectedGraph::addEdge(Edge &e) {
 	if (no_edges >= MAX_NO_EDGES || !searchVertex(*e.getSource())
@@ -119,11 +119,7 @@ bool DirectedGraph::addEdge(Edge &e) {
 }
 
 bool DirectedGraph::remove(Edge &e) {
-	if (searchEdge(e) == false) {
-		cout << "Not found..." << endl;
-		return false;
-	}
-	cout << "Found..." << endl;
+	if (searchEdge(e) == false) return false;
 	int index = 0;
 	for (; index < no_edges; ++index) {
 		if (edges[index]->getSource()->getValue() == e.getSource()->getValue()
