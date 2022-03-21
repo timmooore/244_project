@@ -12,6 +12,13 @@ DirectedGraph::DirectedGraph() {
 	edges = new Edge*[MAX_NO_EDGES];
 }
 
+DirectedGraph::DirectedGraph(const DirectedGraph& dg) {
+	nodes = new Vertex * [MAX_NO_VERTICES];
+	edges = new Edge * [MAX_NO_EDGES];
+	for (int i = 0; i < dg.no_vertices; ++i) addVertex(*dg.nodes[i]);
+	for (int i = 0; i < no_edges; ++i) addEdge(*dg.edges[i]);
+}
+
 DirectedGraph::~DirectedGraph() {
 	for (int i = 0; i < no_vertices; ++i)
 		delete nodes[i];
