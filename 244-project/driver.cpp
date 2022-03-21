@@ -151,7 +151,7 @@ int main() {
 	dg2 = dg3 + dg4;
 
 	cout << dg2 << endl;
-	/*
+	
 	cout << "Testing get all paths on original directed graph..." << endl
 			<< "-----------------------------------" << endl;
 	vector<vector<Edge> > paths;
@@ -225,7 +225,7 @@ int main() {
 		}
 		paths.clear();
 	}
-	*/
+	
 	return EXIT_SUCCESS;
 }
 
