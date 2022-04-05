@@ -7,6 +7,7 @@
 
 #include "Vertex.h"
 #include "Edge.h"
+#include "Graph.h"
 #include "DirectedGraph.h"
 
 int main() {
@@ -66,6 +67,13 @@ int main() {
 
 	dg.display();
 	cout << endl;
+
+	cout << "Attempting to add an edge that creates a cycle..." << endl
+			<< "-----------------------------------" << endl;
+
+	Edge e10(&v5, &v1, 21);
+
+	if (!dg.addEdge(e10)) cout << "Adding edge failed..." << endl;
 
 	cout << "Removing a vertex..." << endl
 			<< "-----------------------------------" << endl;
@@ -156,7 +164,7 @@ int main() {
 			<< "-----------------------------------" << endl;
 	vector<vector<Edge> > paths;
 
-	paths = dg.getPaths(v1, paths);
+	paths = dg.getPaths(v1);
 
 	for (vector<Edge> path : paths) {
 		for (Edge e : path) {
@@ -166,7 +174,7 @@ int main() {
 		cout << endl;
 	}
 	paths.clear();
-	paths = dg.getPaths(v2, paths);
+	paths = dg.getPaths(v2);
 	for (vector<Edge> path : paths) {
 		for (Edge e : path) {
 			cout << e.getSource()->getValue() << " -> ";
@@ -175,7 +183,7 @@ int main() {
 		cout << endl;
 	}
 	paths.clear();
-	paths = dg.getPaths(v3, paths);
+	paths = dg.getPaths(v3);
 	for (vector<Edge> path : paths) {
 		for (Edge e : path) {
 			cout << e.getSource()->getValue() << " -> ";
@@ -184,7 +192,7 @@ int main() {
 		cout << endl;
 	}
 	paths.clear();
-	paths = dg.getPaths(v4, paths);
+	paths = dg.getPaths(v4);
 	for (vector<Edge> path : paths) {
 		for (Edge e : path) {
 			cout << e.getSource()->getValue() << " -> ";
@@ -193,7 +201,7 @@ int main() {
 		cout << endl;
 	}
 	paths.clear();
-	paths = dg.getPaths(v5, paths);
+	paths = dg.getPaths(v5);
 	for (vector<Edge> path : paths) {
 		for (Edge e : path) {
 			cout << e.getSource()->getValue() << " -> ";
@@ -202,7 +210,7 @@ int main() {
 		cout << endl;
 	}
 	paths.clear();
-	paths = dg.getPaths(v6, paths);
+	paths = dg.getPaths(v6);
 	for (vector<Edge> path : paths) {
 		for (Edge e : path) {
 			cout << e.getSource()->getValue() << " -> ";
@@ -215,7 +223,7 @@ int main() {
 
 	paths.clear();
 	for (int i = 0; i < dg2.getNoVertices(); ++i) {
-		paths = dg2.getPaths(*dg2.getNodes()[i], paths);
+		paths = dg2.getPaths(*dg2.getNodes()[i]);
 		for (vector<Edge> path : paths) {
 			for (Edge e : path) {
 				cout << e.getSource()->getValue() << " -> ";
@@ -225,7 +233,7 @@ int main() {
 		}
 		paths.clear();
 	}
-	
+
 	return EXIT_SUCCESS;
 }
 

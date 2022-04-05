@@ -6,6 +6,9 @@
  */
 
 #include "DirectedGraph.h"
+#include "Vertex.h"
+#include "Edge.h"
+#include <vector>
 
 DirectedGraph::DirectedGraph() {
 	nodes = new Vertex*[MAX_NO_VERTICES];
@@ -121,6 +124,10 @@ bool DirectedGraph::addEdge(Edge &e) {
 	if (no_edges >= MAX_NO_EDGES || !searchVertex(*e.getSource())
 			|| !searchVertex(*e.getDest()) || searchEdge(e))
 		return false;
+	if (isPath(*e.getDest(), *e.getSource())) {
+		cout << "Cannot add edge: adding this edge creates a cycle..." << endl;
+		return false;
+	}
 	edges[no_edges++] = new Edge(e.getSource(), e.getDest(), e.getWeight());
 	return true;
 }
@@ -171,42 +178,35 @@ string DirectedGraph::toString() const {
 	return s;
 }
 
-vector<vector<Edge> > DirectedGraph::getPaths(Vertex &v,
-		vector<vector<Edge> > p) {
+vector<vector<Edge> > DirectedGraph::getPaths(Vertex &v) {
 	// cout << "Calling getPaths for node " << v.getValue() << endl;
-	vector<vector<Edge> > paths = p;
+	vector<vector<Edge> > paths;
 	vector<Edge> pt;
-	if (paths.empty()) {
-		for (int j = 0; j < no_edges; ++j) {
-			if (edges[j]->getSource()->getValue() == v.getValue()) {
-				pt.push_back(*edges[j]);
+	for (int i = 0; i < no_edges; ++i) {
+		if (edges[i]->getSource()->getValue() == v.getValue()) {
+			pt.push_back(*edges[i]);
+			paths.push_back(pt);
+			vector<vector<Edge> > childPaths = getPaths(*edges[i]->getDest());
+			// if (!childPaths.isEmpty())
+			for (int j = 0; j < childPaths.size(); ++j) {
+				for(Edge e : childPaths[j]) pt.push_back(e);
 				paths.push_back(pt);
 				pt.clear();
+				pt.push_back(*edges[i]);
 			}
-		}
-		int size = paths.size();
-		for (int i = 0; i < size; ++i) {
-			//cout << "trying for node " << paths[i].back().getDest()->getValue() << endl;
-			paths = getPaths(*(paths[i].back().getDest()), paths);
-		}
-		return paths;
-	}
-	int size = paths.size();
-	for (int i = 0; i < size; ++i) {
-
-		if (paths[i].back().getDest()->getValue() == v.getValue()) {
-			// cout << "Executing for node " << v.getValue() << endl;
-			for (int j = 0; j < no_edges; ++j) {
-				if (edges[j]->getSource()->getValue() == v.getValue()) {
-					vector<Edge> new_path = paths[i];
-					new_path.push_back(*edges[j]);
-					paths.push_back(new_path);
-					paths = getPaths(*(edges[j]->getDest()), paths);
-				}
-			}
+			pt.clear();
 		}
 	}
 	return paths;
+}
+
+bool DirectedGraph::isPath(Vertex& u, Vertex& v) {
+	vector< vector<Edge> > paths;
+	paths = getPaths(u);
+	for (vector<Edge> path : paths) {
+		if (path.back().getDest()->getValue() == v.getValue()) return true;
+	}
+	return false;
 }
 
 bool DirectedGraph::operator==(const DirectedGraph &dg) {
