@@ -11,6 +11,9 @@
 #include <string>
 #include "Edge.h"
 
+#define MAX_NO_VERTICES 20
+#define MAX_NO_EDGES 50
+
 class Graph {
 protected://Change this back after
 	Vertex** nodes;

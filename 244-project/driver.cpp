@@ -9,6 +9,7 @@
 #include "Edge.h"
 #include "Graph.h"
 #include "DirectedGraph.h"
+#include "UndirectedGraph.h"
 
 int main() {
 	cout << "Creating vertices and edges..." << endl
@@ -35,6 +36,11 @@ int main() {
 	cout << "Creating directed graph..." << endl
 			<< "-----------------------------------" << endl;
 	DirectedGraph dg;
+
+	cout << "Testing if the graph can be empty..." << endl
+			<< "-----------------------------------" << endl;
+	cout << dg;
+	cout << endl;
 
 	cout << "Testing adding a vertices..." << endl
 			<< "-----------------------------------" << endl;

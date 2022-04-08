@@ -8,9 +8,6 @@
 #ifndef DIRECTEDGRAPH_H_
 #define DIRECTEDGRAPH_H_
 
-#define MAX_NO_VERTICES 20
-#define MAX_NO_EDGES 50
-
 #include "Graph.h"
 #include <vector>
 

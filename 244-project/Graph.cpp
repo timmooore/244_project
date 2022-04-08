@@ -34,7 +34,7 @@ Edge** Graph::getEdges() const {
 
 ostream& operator<<(ostream &output, const Graph &g) {
 	if (g.no_vertices == 0) {
-		output << "V = empty set\nE = empty set" << endl;
+		output << "Graph is empty\nV = empty set\nE = empty set" << endl;
 		return output;
 	}
 	output << "V = {";

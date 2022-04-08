@@ -97,7 +97,7 @@ bool DirectedGraph::removeVertex(Vertex &v) {
 
 void DirectedGraph::display() const {
 	if (no_vertices == 0) {
-		cout << "V = empty set\nE = empty set" << endl;
+		cout << "Graph is empty\nV = empty set\nE = empty set" << endl;
 		return;
 	}
 	cout << "V = {";
@@ -177,6 +177,7 @@ string DirectedGraph::toString() const {
 			+ "), " + to_string(edges[no_edges - 1]->getWeight()) + "}}";
 	return s;
 }
+
 
 vector<vector<Edge> > DirectedGraph::getPaths(Vertex &v) {
 	// cout << "Calling getPaths for node " << v.getValue() << endl;
