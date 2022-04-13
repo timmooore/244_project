@@ -28,6 +28,7 @@ public:
 	//vector<vector<Edge> > getPaths(Vertex& v, vector<vector<Edge> >);
 	vector< vector<Edge> > getPaths(Vertex&);
 	bool isPath(Vertex&, Vertex&);
+	void printAllPaths();
 
 	bool operator==(const DirectedGraph&);
 	DirectedGraph& operator=(const DirectedGraph&);

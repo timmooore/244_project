@@ -168,78 +168,13 @@ int main() {
 	
 	cout << "Testing get all paths on original directed graph..." << endl
 			<< "-----------------------------------" << endl;
-	vector<vector<Edge> > paths;
 
-	paths = dg.getPaths(v1);
-
-	for (vector<Edge> path : paths) {
-		for (Edge e : path) {
-			cout << e.getSource()->getValue() << " -> ";
-		}
-		cout << path.back().getDest()->getValue();
-		cout << endl;
-	}
-	paths.clear();
-	paths = dg.getPaths(v2);
-	for (vector<Edge> path : paths) {
-		for (Edge e : path) {
-			cout << e.getSource()->getValue() << " -> ";
-		}
-		cout << path.back().getDest()->getValue();
-		cout << endl;
-	}
-	paths.clear();
-	paths = dg.getPaths(v3);
-	for (vector<Edge> path : paths) {
-		for (Edge e : path) {
-			cout << e.getSource()->getValue() << " -> ";
-		}
-		cout << path.back().getDest()->getValue();
-		cout << endl;
-	}
-	paths.clear();
-	paths = dg.getPaths(v4);
-	for (vector<Edge> path : paths) {
-		for (Edge e : path) {
-			cout << e.getSource()->getValue() << " -> ";
-		}
-		cout << path.back().getDest()->getValue();
-		cout << endl;
-	}
-	paths.clear();
-	paths = dg.getPaths(v5);
-	for (vector<Edge> path : paths) {
-		for (Edge e : path) {
-			cout << e.getSource()->getValue() << " -> ";
-		}
-		cout << path.back().getDest()->getValue();
-		cout << endl;
-	}
-	paths.clear();
-	paths = dg.getPaths(v6);
-	for (vector<Edge> path : paths) {
-		for (Edge e : path) {
-			cout << e.getSource()->getValue() << " -> ";
-		}
-		cout << path.back().getDest()->getValue();
-		cout << endl;
-	}
+	dg.printAllPaths();
 
 	cout << endl;
 
-	paths.clear();
-	for (int i = 0; i < dg2.getNoVertices(); ++i) {
-		paths = dg2.getPaths(*dg2.getNodes()[i]);
-		for (vector<Edge> path : paths) {
-			for (Edge e : path) {
-				cout << e.getSource()->getValue() << " -> ";
-			}
-			cout << path.back().getDest()->getValue();
-			cout << endl;
-		}
-		paths.clear();
-	}
-
+	dg2.printAllPaths();
+	
 	return EXIT_SUCCESS;
 }
 

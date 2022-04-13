@@ -19,7 +19,7 @@ DirectedGraph::DirectedGraph(const DirectedGraph& dg) {
 	nodes = new Vertex * [MAX_NO_VERTICES];
 	edges = new Edge * [MAX_NO_EDGES];
 	for (int i = 0; i < dg.no_vertices; ++i) addVertex(*dg.nodes[i]);
-	for (int i = 0; i < no_edges; ++i) addEdge(*dg.edges[i]);
+	for (int i = 0; i < dg.no_edges; ++i) addEdge(*dg.edges[i]);
 }
 
 DirectedGraph::~DirectedGraph() {
@@ -190,7 +190,7 @@ vector<vector<Edge> > DirectedGraph::getPaths(Vertex &v) {
 			vector<vector<Edge> > childPaths = getPaths(*edges[i]->getDest());
 			// if (!childPaths.isEmpty())
 			for (int j = 0; j < childPaths.size(); ++j) {
-				for(Edge e : childPaths[j]) pt.push_back(e);
+				for(Edge& e : childPaths[j]) pt.push_back(e);
 				paths.push_back(pt);
 				pt.clear();
 				pt.push_back(*edges[i]);
@@ -208,6 +208,21 @@ bool DirectedGraph::isPath(Vertex& u, Vertex& v) {
 		if (path.back().getDest()->getValue() == v.getValue()) return true;
 	}
 	return false;
+}
+
+void DirectedGraph::printAllPaths() {
+	vector< vector< Edge > > paths;
+	for (int i = 0; i < no_vertices; ++i) {
+		paths = getPaths(*nodes[i]);
+		for (vector<Edge> path : paths) {
+			for (Edge& e : path) {
+				cout << e.getSource()->getValue() << " -> ";
+			}
+			cout << path.back().getDest()->getValue();
+			cout << endl;
+		}
+		paths.clear();
+	}
 }
 
 bool DirectedGraph::operator==(const DirectedGraph &dg) {
@@ -301,8 +316,8 @@ DirectedGraph DirectedGraph::operator+(const DirectedGraph &dg) {
 	for (int i = 0; i < no_edges; ++i)
 		new_graph.addEdge(*edges[i]);
 
-	for (int i = 0; i < dg.getNoEdges(); ++i)
-		new_graph.addEdge(*dg.getEdges()[i]);
+	for (int i = 0; i < dg.getNoEdges(); ++i) new_graph.addEdge(*dg.getEdges()[i]);
+		
 	return new_graph;
 }
 
