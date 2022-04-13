@@ -32,7 +32,7 @@ DirectedGraph::~DirectedGraph() {
 }
 
 bool DirectedGraph::addVertex(Vertex &v) {
-	if (no_vertices + 1 >= MAX_NO_EDGES)
+	if (no_vertices >= MAX_NO_EDGES)
 		return false;
 	nodes[no_vertices++] = new Vertex(v.getValue());
 	return true;
