@@ -230,6 +230,11 @@ int main() {
 
 	dg2.printAllPaths();
 	
+	UndirectedGraph udg;
+
+	Edge e11(&v4, &v6, 99);
+		udg.addEdge(e11);
+
 	return EXIT_SUCCESS;
 }
 
