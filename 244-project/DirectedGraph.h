@@ -30,6 +30,7 @@ public:
 	vector< vector<Edge> > getPaths(Vertex&);
 	bool isPath(Vertex&, Vertex&);
 	void printAllPaths();
+	void printFlightPaths(Vertex&, Vertex&);
 
 	bool operator==(const DirectedGraph&);
 	DirectedGraph& operator=(const DirectedGraph&);

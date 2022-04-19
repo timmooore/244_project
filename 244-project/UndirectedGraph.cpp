@@ -321,6 +321,29 @@ void UndirectedGraph::printAllPaths() {
 	}
 }
 
+void UndirectedGraph::printFlightPaths(Vertex& u, Vertex& v) {
+	vector< vector< Edge > > paths;
+	unordered_map<int, bool> isVisited;
+	int miles;
+	for (int i = 0; i < no_vertices; ++i) {
+		int value = nodes[i]->getValue();
+		isVisited[value] = false;
+	}
+	paths = getPaths(u, isVisited);
+	for (vector<Edge> path : paths) {
+		miles = 0;
+		if (path.back().getDest()->getValue() == v.getValue()) {
+			for (Edge& e : path) {
+				miles += e.getWeight();
+				cout << e.getSource()->getAirport() << " -> ";
+			}
+			cout << path.back().getDest()->getAirport() << ", " << miles << " miles";
+			cout << endl;
+		}
+	}
+	paths.clear();
+}
+
 ostream& operator<<(ostream& output, const UndirectedGraph& udg) {
 	if (udg.no_vertices == 0) {
 		output << "Graph is empty\nV = empty set\nE = empty set" << endl;

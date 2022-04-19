@@ -281,7 +281,23 @@ void DirectedGraph::printAllPaths() {
 	}
 }
 
-
+void DirectedGraph::printFlightPaths(Vertex& u, Vertex& v) {
+	vector< vector< Edge > > paths;
+	int miles;
+	paths = getPaths(u);
+	for (vector<Edge> path : paths) {
+		miles = 0;
+		if (path.back().getDest()->getValue() == v.getValue()) {
+			for (Edge& e : path) {
+				miles += e.getWeight();
+				cout << e.getSource()->getAirport() << " -> ";
+			}
+			cout << path.back().getDest()->getAirport() << ", " << miles << " miles";
+			cout << endl;
+		}
+	}
+	paths.clear();
+}
 
 // comparison operator uses arrays of booleans corresponding to each
 // vertex and edge of the graphs to be compared. It first checks if the
@@ -314,7 +330,7 @@ bool DirectedGraph::operator==(const DirectedGraph &dg) {
 			if (edges[i]->getSource()->getValue()
 					== dg.getEdges()[j]->getSource()->getValue()
 					&& edges[i]->getDest()->getValue()
-							== dg.getEdges()[j]->getSource()->getValue()) {
+							== dg.getEdges()[j]->getDest()->getValue()) {
 				edge_present[i] = true;
 			}
 		}

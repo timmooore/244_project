@@ -30,6 +30,7 @@ public:
 	vector< vector<Edge> > getPaths(Vertex&, unordered_map<int, bool>);
 	bool isPath(Vertex&, Vertex&);
 	void printAllPaths();
+	void printFlightPaths(Vertex&, Vertex&);
 	friend ostream& operator<<(ostream&, const UndirectedGraph&);
 
 
