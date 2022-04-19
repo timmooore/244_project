@@ -243,6 +243,17 @@ bool UndirectedGraph::clean() {
 	return true;
 }
 
+// Use vector<Edge> to represent a path, i.e. a collection of edges. Then a
+// collection of paths is a vector< vector<Edge> >. For each vertex w that is
+// adjacent to vertex v, add the Edge (v, w) as a path, then recursively call
+// getPaths on vertex w to obtain all the paths that w leads. Append each of
+// the paths that w leads to the path from v to w. Repeat this process for each
+// vertex that is adjacent to vertex v to obtain all of the possible paths that
+// v leads. However, since the edges are undirected, an unordered_map is used
+// to determine whether a vertex has been visited or not, since not checking
+// this will result in infinite loops. Thus, a new path is only added from
+// a vertex if that vertex has not been visited yet
+
 vector<vector<Edge> > UndirectedGraph::getPaths(Vertex &v,
 		unordered_map<int, bool> is_visited) {
 	// cout << "Calling getPaths for node " << v.getValue() << endl;
@@ -253,12 +264,10 @@ vector<vector<Edge> > UndirectedGraph::getPaths(Vertex &v,
 	for (int i = 0; i < no_edges; ++i) {
 		if (edges[i]->getSource()->getValue() == v.getValue()
 				&& new_visited[edges[i]->getDest()->getValue()] == false) {
-			//new_visited[edges[i]->getDest()->getValue()] = true;
 			pt.push_back(*edges[i]);
 			paths.push_back(pt);
 			vector<vector<Edge> > childPaths = getPaths(*edges[i]->getDest(),
 					new_visited);
-			// if (!childPaths.isEmpty())
 			for (int j = 0; j < childPaths.size(); ++j) {
 				for (Edge& e : childPaths[j]) pt.push_back(e);
 				paths.push_back(pt);
@@ -268,13 +277,11 @@ vector<vector<Edge> > UndirectedGraph::getPaths(Vertex &v,
 			pt.clear();
 		} else if (edges[i]->getDest()->getValue() == v.getValue()
 				&& new_visited[edges[i]->getSource()->getValue()] == false) {
-			//new_visited[edges[i]->getSource()->getValue()] = true;
 			Edge e(edges[i]->getDest(), edges[i]->getSource(), edges[i]->getWeight());
 			pt.push_back(e);
 			paths.push_back(pt);
 			vector<vector<Edge> > childPaths = getPaths(*edges[i]->getSource(),
 					new_visited);
-			// if (!childPaths.isEmpty())
 			for (int j = 0; j < childPaths.size(); ++j) {
 				for (Edge& e : childPaths[j]) pt.push_back(e);
 				paths.push_back(pt);
@@ -286,6 +293,10 @@ vector<vector<Edge> > UndirectedGraph::getPaths(Vertex &v,
 	}
 	return paths;
 }
+
+// To find out if a path exists, first find all the pathcs that u leads, then
+// iterate over each path and determine whether vertex v is the end of that
+// path. If it is, return true
 
 bool UndirectedGraph::isPath(Vertex& u, Vertex& v) {
 	vector< vector<Edge> > paths;
@@ -300,6 +311,9 @@ bool UndirectedGraph::isPath(Vertex& u, Vertex& v) {
 	}
 	return false;
 }
+
+// To print all paths in a graph, use getPaths on each vertex in the graph and
+// print all the paths each of the vertices lead
 
 void UndirectedGraph::printAllPaths() {
 	vector< vector< Edge > > paths;
@@ -320,6 +334,11 @@ void UndirectedGraph::printAllPaths() {
 		paths.clear();
 	}
 }
+
+// printFlightPaths uses getPaths to get all the paths that u leads and is 
+// similar to isPath in that it only prints a path if v is the destination
+// of that path. It also tallies all the weights of the edges on a path
+// that leads to v and outputs the total next to the path.
 
 void UndirectedGraph::printFlightPaths(Vertex& u, Vertex& v) {
 	vector< vector< Edge > > paths;
@@ -343,6 +362,9 @@ void UndirectedGraph::printFlightPaths(Vertex& u, Vertex& v) {
 	}
 	paths.clear();
 }
+
+// Overloaded the operator<< for undirected graph so that edges are printed as
+// {u, v} instead of (u, v) since the edges are undirected
 
 ostream& operator<<(ostream& output, const UndirectedGraph& udg) {
 	if (udg.no_vertices == 0) {

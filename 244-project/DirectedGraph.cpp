@@ -229,6 +229,8 @@ string DirectedGraph::toString() const {
 	return s;
 }
 
+// Simply remove all vertices using removeVertex
+
 bool DirectedGraph::clean() {
 	while (no_vertices > 0) {
 		if (removeVertex(*nodes[no_vertices - 1]) == false)
@@ -236,6 +238,14 @@ bool DirectedGraph::clean() {
 	}
 	return true;
 }
+
+// Use vector<Edge> to represent a path, i.e. a collection of edges. Then a
+// collection of paths is a vector< vector<Edge> >. For each vertex w that is
+// adjacent to vertex v, add the Edge (v, w) as a path, then recursively call
+// getPaths on vertex w to obtain all the paths that w leads. Append each of
+// the paths that w leads to the path from v to w. Repeat this process for each
+// vertex that is adjacent to vertex v to obtain all of the possible paths that
+// v leads. 
 
 vector<vector<Edge> > DirectedGraph::getPaths(Vertex &v) {
 	vector<vector<Edge> > paths;
@@ -257,6 +267,10 @@ vector<vector<Edge> > DirectedGraph::getPaths(Vertex &v) {
 	return paths;
 }
 
+// To find out if a path exists, first find all the pathcs that u leads, then
+// iterate over each path and determine whether vertex v is the end of that
+// path. If it is, return true
+
 bool DirectedGraph::isPath(Vertex& u, Vertex& v) {
 	vector< vector<Edge> > paths;
 	paths = getPaths(u);
@@ -266,6 +280,8 @@ bool DirectedGraph::isPath(Vertex& u, Vertex& v) {
 	return false;
 }
 
+// To print all paths in a graph, use getPaths on each vertex in the graph and
+// print all the paths each of the vertices lead
 void DirectedGraph::printAllPaths() {
 	vector< vector< Edge > > paths;
 	for (int i = 0; i < no_vertices; ++i) {
@@ -280,6 +296,11 @@ void DirectedGraph::printAllPaths() {
 		paths.clear();
 	}
 }
+
+// printFlightPaths uses getPaths to get all the paths that u leads and is 
+// similar to isPath in that it only prints a path if v is the destination
+// of that path. It also tallies all the weights of the edges on a path
+// that leads to v and outputs the total next to the path.
 
 void DirectedGraph::printFlightPaths(Vertex& u, Vertex& v) {
 	vector< vector< Edge > > paths;
