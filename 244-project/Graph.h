@@ -48,7 +48,7 @@ public:
 	// define your own format of a string representation of the graph.
 	virtual string toString () const = 0;
 	//remove all the vertices and edges;
-	/////////////////virtual bool clean() = 0;
+	virtual bool clean() = 0;
 	// you may consider the following in your project:
 	// add/remove a set of edge; as a result, some node may remain as orphan.
 	//virtual bool addEdges(Edge* eArray) = 0;

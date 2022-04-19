@@ -10,10 +10,16 @@
 #include "Edge.h"
 #include <vector>
 
+// Default constructor creates arrays of Vertex and Edge pointers
+// of sizes MAX_NO_VERTICES and MAX_NO_EDGES defined in DirectedGraph header
+
 DirectedGraph::DirectedGraph() {
 	nodes = new Vertex*[MAX_NO_VERTICES];
 	edges = new Edge*[MAX_NO_EDGES];
 }
+
+// Copy constructor creates new arrays and adds vertices and edges from
+// DirectedGraph to be copied
 
 DirectedGraph::DirectedGraph(const DirectedGraph& dg) {
 	nodes = new Vertex * [MAX_NO_VERTICES];
@@ -21,6 +27,10 @@ DirectedGraph::DirectedGraph(const DirectedGraph& dg) {
 	for (int i = 0; i < dg.no_vertices; ++i) addVertex(*dg.nodes[i]);
 	for (int i = 0; i < dg.no_edges; ++i) addEdge(*dg.edges[i]);
 }
+
+// Virtual destructor destroys all of the dynamically allocted vertices
+// and edges that are allocated in functions addVertex and addEdge,
+// the deletes the pointer arrays
 
 DirectedGraph::~DirectedGraph() {
 	for (int i = 0; i < no_vertices; ++i)
@@ -31,12 +41,19 @@ DirectedGraph::~DirectedGraph() {
 	delete[] edges;
 }
 
+// addVertex dynamically allocates Vertex objects in the Vertex pointer
+// array nodes if the no of vertices is less than MAX_NO_VERTICES and returns
+// true. Also increments the number of vertices.
+
 bool DirectedGraph::addVertex(Vertex &v) {
 	if (no_vertices >= MAX_NO_EDGES)
 		return false;
 	nodes[no_vertices++] = new Vertex(v.getValue());
 	return true;
 }
+
+// Similar to addVertex, the same function is performed but using an
+// array of Vertex pointers as input and the number of vertices to be added
 
 bool DirectedGraph::addVertices(Vertex *vArray, int no_vertices) {
 	if (this->no_vertices + no_vertices >= MAX_NO_VERTICES)
@@ -47,6 +64,10 @@ bool DirectedGraph::addVertices(Vertex *vArray, int no_vertices) {
 	return true;
 }
 
+// searchVertex iterates through the array of Vertex pointers and checks
+// if the values match the value of the vertex passed to the function.
+// Returns true if found and false otherwise
+
 bool DirectedGraph::searchVertex(const Vertex &v) {
 	for (int i = 0; i < no_vertices; ++i) {
 		if (nodes[i]->getValue() == v.getValue())
@@ -54,6 +75,10 @@ bool DirectedGraph::searchVertex(const Vertex &v) {
 	}
 	return false;
 }
+
+// Similarly to searchVertex, searchEdge checks that both the source
+// and dest vertices in the edge have the same values of those as the
+// edge passed as a parameter
 
 bool DirectedGraph::searchEdge(const Edge &e) {
 	for (int i = 0; i < no_edges; ++i) {
@@ -65,6 +90,12 @@ bool DirectedGraph::searchEdge(const Edge &e) {
 	}
 	return false;
 }
+
+// Remove vertex is tricky. First it checks if the vertex is in the graph,
+// using searchVertex, and returns false if it is not. If the vertex is found,
+// it deallocates the memory and removes it from the nodes array. Then, it
+// searches for each edge containing the deleted vertex as either source or
+// dest, and removes those edges from the graph.
 
 bool DirectedGraph::removeVertex(Vertex &v) {
 	if (searchVertex(v) == false)
@@ -95,6 +126,11 @@ bool DirectedGraph::removeVertex(Vertex &v) {
 	return true;
 }
 
+// Displays the graph as a set of integer values corresponding to the
+// values of the vertices and a second set of sets of an ordered pair of
+// vertices corresponding to the source and dest vertices, and an integer
+// value corresponding to the weight.
+
 void DirectedGraph::display() const {
 	if (no_vertices == 0) {
 		cout << "Graph is empty\nV = empty set\nE = empty set" << endl;
@@ -119,7 +155,13 @@ void DirectedGraph::display() const {
 	cout << "}" << endl;
 }
 
-// Need to fix so that it doesn't add cycles
+// addEdge checks that both the vertices of the edges it is attempting
+// to add exist in the graph and that the number of edges is less than the
+// maximum. If so it dynamically allocates memory for the new edge in the
+// array of Edge pointers. Uses isPath function to check that there isn't
+// already a patch from the destination of input Edge e to the source of
+// input Edge e, since this would result in a cycle in e was added
+
 bool DirectedGraph::addEdge(Edge &e) {
 	if (no_edges >= MAX_NO_EDGES || !searchVertex(*e.getSource())
 			|| !searchVertex(*e.getDest()) || searchEdge(e))
@@ -131,6 +173,8 @@ bool DirectedGraph::addEdge(Edge &e) {
 	edges[no_edges++] = new Edge(e.getSource(), e.getDest(), e.getWeight());
 	return true;
 }
+
+// removeEdge checks whether the edge exists and removes it
 
 bool DirectedGraph::remove(Edge &e) {
 	if (searchEdge(e) == false) return false;
@@ -150,6 +194,9 @@ bool DirectedGraph::remove(Edge &e) {
 	no_edges--;
 	return true;
 }
+
+// toString implemented the same as display but all elements are passed to
+// a string instead of cout
 
 string DirectedGraph::toString() const {
 	string s = "";
@@ -177,6 +224,7 @@ string DirectedGraph::toString() const {
 			+ "), " + to_string(edges[no_edges - 1]->getWeight()) + "}}";
 	return s;
 }
+
 
 
 vector<vector<Edge> > DirectedGraph::getPaths(Vertex &v) {
@@ -223,6 +271,21 @@ void DirectedGraph::printAllPaths() {
 	}
 }
 
+bool DirectedGraph::clean() {
+	while (no_vertices > 0) {
+		if (removeVertex(*nodes[no_vertices - 1]) == false)
+			return false;
+	}
+	return true;
+}
+
+// comparison operator uses arrays of booleans corresponding to each
+// vertex and edge of the graphs to be compared. It first checks if the
+// number of edges and vertices are the same and if so it assigns true
+// to each index in the bool array of there is an identical edge or
+// vertex in both graphs. It finally checks whether all values in each
+// array are set to true, and returns true if so
+
 bool DirectedGraph::operator==(const DirectedGraph &dg) {
 	if (no_vertices != dg.getNoVertices())
 		return false;
@@ -263,6 +326,10 @@ bool DirectedGraph::operator==(const DirectedGraph &dg) {
 	return true;
 }
 
+// Deallocates the memory of the graph to be assigned to, then
+// adds edges and vertices back to the graph from the graph to
+// be assigned from
+
 DirectedGraph& DirectedGraph::operator=(const DirectedGraph &dg) {
 	if (no_vertices != 0) {
 		for (int i = 0; i < no_vertices; ++i) {
@@ -285,6 +352,9 @@ DirectedGraph& DirectedGraph::operator=(const DirectedGraph &dg) {
 	return *this;
 }
 
+// Iterates over all edges and increments the weight using
+// setWeight
+
 DirectedGraph& DirectedGraph::operator++() {
 	for (int i = 0; i < no_edges; ++i) {
 		int w = edges[i]->getWeight();
@@ -292,6 +362,10 @@ DirectedGraph& DirectedGraph::operator++() {
 	}
 	return *this;
 }
+
+// Creates a copy of the graph to return the original values,
+// then increments the weights of all the edges in the graph
+// the postfix increment was called from
 
 DirectedGraph DirectedGraph::operator++(int) {
 	DirectedGraph og;
@@ -303,7 +377,14 @@ DirectedGraph DirectedGraph::operator++(int) {
 	return og;
 }
 
+// Creates new graph and adds edges and vertices from each of the
+// two graphs to be added.
+
 DirectedGraph DirectedGraph::operator+(const DirectedGraph &dg) {
+	if (this->no_vertices + dg.no_vertices > MAX_NO_VERTICES
+			|| this->no_edges +dg.no_edges > MAX_NO_EDGES)
+		throw "Cannot add graphs, sum of vertices or sum of edges is greater "
+		"than maximum allowed size.";
 	DirectedGraph new_graph;
 	for (int i = 0; i < no_vertices; ++i)
 		new_graph.addVertex(*nodes[i]);
@@ -318,6 +399,8 @@ DirectedGraph DirectedGraph::operator+(const DirectedGraph &dg) {
 		
 	return new_graph;
 }
+
+// Sums the weights of all the edges and compares
 
 bool DirectedGraph::operator>(const DirectedGraph &dg) {
 	int left_sum = 0;

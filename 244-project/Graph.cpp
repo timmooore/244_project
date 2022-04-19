@@ -32,6 +32,8 @@ Edge** Graph::getEdges() const {
 	return edges;
 }
 
+// Essentially copy and paste of display, but overloads << operator
+
 ostream& operator<<(ostream &output, const Graph &g) {
 	if (g.no_vertices == 0) {
 		output << "Graph is empty\nV = empty set\nE = empty set" << endl;

@@ -25,6 +25,7 @@ public:
 	virtual bool addEdge(Edge& e);
 	virtual bool remove(Edge &e);
 	virtual string toString () const;
+	virtual bool clean();
 	//vector<vector<Edge> > getPaths(Vertex& v, vector<vector<Edge> >);
 	vector< vector<Edge> > getPaths(Vertex&);
 	bool isPath(Vertex&, Vertex&);

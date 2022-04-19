@@ -33,6 +33,40 @@ int main() {
 	Edge e8(&v6, &v3, 17);
 	Edge e9(&v6, &v5, 19);
 
+	cout << "V1 = ";
+	v1.print();
+	cout << endl << "V2 = ";
+	v2.print();
+	cout << endl << "V3 = ";
+	v3.print();
+	cout << endl << "V4 = ";
+	v4.print();
+	cout << endl << "V5 = ";
+	v5.print();
+	cout << endl << "V6 = ";
+	v6.print();
+	cout << endl << endl;
+
+	cout << "E1 = ";
+	e1.print();
+	cout << endl << "E2 = ";
+	e2.print();
+	cout << endl << "E3 = ";
+	e3.print();
+	cout << endl << "E4 = ";
+	e4.print();
+	cout << endl << "E5 = ";
+	e5.print();
+	cout << endl << "E6 = ";
+	e6.print();
+	cout << endl << "E7 = ";
+	e7.print();
+	cout << endl << "E8 = ";
+	e8.print();
+	cout << endl << "E9 = ";
+	e9.print();
+	cout << endl << endl;
+
 	cout << "Creating directed graph..." << endl
 			<< "-----------------------------------" << endl;
 	DirectedGraph dg;
@@ -58,7 +92,7 @@ int main() {
 	dg.display();
 	cout << endl;
 
-	cout << "Adding an edge..." << endl << "-----------------------------------"
+	cout << "Adding edges..." << endl << "-----------------------------------"
 			<< endl;
 
 	dg.addEdge(e1);
@@ -90,8 +124,7 @@ int main() {
 
 	cout << "Trying to add an edge from a vertex not in the graph..." << endl
 			<< "-----------------------------------" << endl;
-	if (!dg.addEdge(e1))
-		cout << "Failed to add edge..." << endl;
+	if (!dg.addEdge(e1)) cout << "Failed to add edge..." << endl;
 
 	cout << "Adding the right vertex and retrying to add edge..." << endl
 			<< "-----------------------------------" << endl;
@@ -108,7 +141,7 @@ int main() {
 	string s = dg.toString();
 	cout << s << endl;
 
-	cout << "Creating a second directed graph..." << endl
+	cout << endl << "Creating a second directed graph..." << endl
 			<< "Testing the assignment operator..." << endl
 			<< "--------------------------------------" << endl;
 
@@ -162,16 +195,34 @@ int main() {
 	cout << "Graph 4 is: " << endl << dg4 << endl;
 
 	cout << "Adding graph 3 and 4 and assigning it to graph 2 gives:" << endl;
-	dg2 = dg3 + dg4;
+	try {
+		dg2 = dg3 + dg4;
+	}
+	catch(string& err_msg) {
+		cout << err_msg << endl;
+		exit(EXIT_FAILURE);
+	}
 
 	cout << dg2 << endl;
 	
-	cout << "Testing get all paths on original directed graph..." << endl
+	cout << "Testing getPaths on vertex V6 in original directed graph..."
+			<< endl << "-----------------------------------" << endl;
+
+	vector< vector< Edge > > paths = dg.getPaths(v6);
+	for (vector< Edge > path : paths) {
+		for (Edge& e : path) cout << e.getSource()->getValue() << " -> ";
+		cout << path.back().getDest()->getValue();
+		cout << endl;
+	}
+
+	cout << endl;
+	cout << "Testing printAllPaths on original directed graph..." << endl
 			<< "-----------------------------------" << endl;
 
 	dg.printAllPaths();
 
-	cout << endl;
+	cout << endl << "Testing printAllPaths on Graph 2..." << endl
+			<< "-----------------------------------" << endl;
 
 	dg2.printAllPaths();
 	
