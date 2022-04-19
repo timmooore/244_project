@@ -208,8 +208,10 @@ string DirectedGraph::toString() const {
 	}
 	s = "V = {";
 	for (int i = 0; i < no_vertices - 1; ++i)
-		s = s + to_string(nodes[i]->getValue()) + ", ";
-	s = s + to_string(nodes[no_vertices - 1]->getValue()) + "}\n";
+		s = s + "(" + to_string(nodes[i]->getValue()) + ", " 
+		+ nodes[i]->getAirport() + "), ";
+	s = s + "(" + to_string(nodes[no_vertices - 1]->getValue()) + ", " 
+		+ nodes[no_vertices - 1]->getAirport() + ")}\n";
 
 	if (no_edges == 0) {
 		s += "E = empty set";
@@ -227,7 +229,13 @@ string DirectedGraph::toString() const {
 	return s;
 }
 
-
+bool DirectedGraph::clean() {
+	while (no_vertices > 0) {
+		if (removeVertex(*nodes[no_vertices - 1]) == false)
+			return false;
+	}
+	return true;
+}
 
 vector<vector<Edge> > DirectedGraph::getPaths(Vertex &v) {
 	vector<vector<Edge> > paths;
@@ -264,22 +272,16 @@ void DirectedGraph::printAllPaths() {
 		paths = getPaths(*nodes[i]);
 		for (vector<Edge> path : paths) {
 			for (Edge& e : path) {
-				cout << e.getSource()->getValue() << " -> ";
+				cout << e.getSource()->getAirport() << " -> ";
 			}
-			cout << path.back().getDest()->getValue();
+			cout << path.back().getDest()->getAirport();
 			cout << endl;
 		}
 		paths.clear();
 	}
 }
 
-bool DirectedGraph::clean() {
-	while (no_vertices > 0) {
-		if (removeVertex(*nodes[no_vertices - 1]) == false)
-			return false;
-	}
-	return true;
-}
+
 
 // comparison operator uses arrays of booleans corresponding to each
 // vertex and edge of the graphs to be compared. It first checks if the

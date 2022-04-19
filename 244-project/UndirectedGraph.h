@@ -23,10 +23,13 @@ public:
 	virtual bool searchEdge(const Edge&);
 	virtual bool removeVertex(Vertex&);
 	virtual void display() const;
-	/*virtual bool addEdge(Edge&);
+	virtual bool addEdge(Edge&);
 	virtual bool remove(Edge&);
-	virtual string toString() const;*/
+	virtual string toString() const;
+	virtual bool clean();
 	vector< vector<Edge> > getPaths(Vertex&, unordered_map<int, bool>);
+	bool isPath(Vertex&, Vertex&);
+	void printAllPaths();
 	friend ostream& operator<<(ostream&, const UndirectedGraph&);
 
 

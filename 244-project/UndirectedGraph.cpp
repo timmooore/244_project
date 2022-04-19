@@ -15,7 +15,7 @@ UndirectedGraph::UndirectedGraph(const UndirectedGraph& udg) {
 	nodes = new Vertex * [MAX_NO_VERTICES];
 	edges = new Edge * [MAX_NO_EDGES];
 	for (int i = 0; i < udg.no_vertices; ++i) addVertex(*udg.nodes[i]);
-	//for (int i = 0; i < udg.no_edges; ++i) addEdge(*udg.edges[i]);
+	for (int i = 0; i < udg.no_edges; ++i) addEdge(*udg.edges[i]);
 }
 
 // Virtual destructor destroys all of the dynamically allocted vertices
@@ -38,7 +38,7 @@ UndirectedGraph::~UndirectedGraph() {
 bool UndirectedGraph::addVertex(Vertex& v) {
 	if (no_vertices >= MAX_NO_EDGES)
 		return false;
-	nodes[no_vertices++] = new Vertex(v.getValue());
+	nodes[no_vertices++] = new Vertex(v.getValue(), v.getAirport());
 	return true;
 }
 
@@ -49,7 +49,8 @@ bool UndirectedGraph::addVertices(Vertex* vArray, int no_vertices) {
 	if (this->no_vertices + no_vertices >= MAX_NO_VERTICES)
 		return false;
 	for (int i = 0; i < no_vertices; ++i) {
-		nodes[this->no_vertices++] = new Vertex(vArray[i].getValue(), vArray[i].getAirport());
+		nodes[this->no_vertices++] 
+			= new Vertex(vArray[i].getValue(), vArray[i].getAirport());
 	}
 	return true;
 }
@@ -76,15 +77,15 @@ bool UndirectedGraph::searchEdge(const Edge& e) {
 	for (int i = 0; i < no_edges; ++i) {
 		if (
 			(
-				(edges[i]->getDest()->getValue() == e.getDest()->getValue()
-					&& edges[i]->getSource()->getValue()
-					== e.getSource()->getValue())
+				(edges[i]->getSource()->getValue() == e.getSource()->getValue()
+					&& edges[i]->getDest()->getValue()
+					== e.getDest()->getValue())
 				|| (edges[i]->getSource()->getValue()
 					== e.getDest()->getValue()
 					&& edges[i]->getDest()->getValue()
 					== e.getSource()->getValue())
-			) && edges[i]->getWeight() == e.getWeight()
-		) return true;
+				) && edges[i]->getWeight() == e.getWeight()
+			) return true;
 	}
 	return false;
 }
@@ -155,6 +156,93 @@ void UndirectedGraph::display() const {
 	cout << "}" << endl;
 }
 
+// addEdge checks that both the vertices of the edges it is attempting
+// to add exist in the graph and that the number of edges is less than the
+// maximum. If so it dynamically allocates memory for the new edge in the
+// array of Edge pointers. Uses isPath function to check that there isn't
+// already a patch from the destination of input Edge e to the source of
+// input Edge e, since this would result in a cycle in e was added
+
+bool UndirectedGraph::addEdge(Edge& e) {
+	if (no_edges >= MAX_NO_EDGES || !searchVertex(*e.getSource())
+		|| !searchVertex(*e.getDest()) || searchEdge(e))
+		return false;
+	if (isPath(*e.getDest(), *e.getSource())) {
+		cout << "Cannot add edge: adding this edge creates a cycle..." << endl;
+		return false;
+	}
+	edges[no_edges++] = new Edge(e.getSource(), e.getDest(), e.getWeight());
+	return true;
+}
+
+// removeEdge checks whether the edge exists and removes it
+
+bool UndirectedGraph::remove(Edge& e) {
+	if (searchEdge(e) == false) return false;
+	int index = 0;
+	for (; index < no_edges; ++index) {
+		if (
+			(
+				(edges[index]->getSource()->getValue()
+					== e.getSource()->getValue()
+					&& edges[index]->getDest()->getValue()
+					== e.getDest()->getValue())
+				|| (edges[index]->getSource()->getValue()
+					== e.getDest()->getValue()
+					&& edges[index]->getDest()->getValue()
+					== e.getSource()->getValue())
+				) && edges[index]->getWeight() == e.getWeight()
+			) break;
+	}
+	delete edges[index];
+	for (; index < no_edges - 1; ++index) {
+		edges[index] = edges[index + 1];
+	}
+	edges[index] = nullptr;
+	no_edges--;
+	return true;
+}
+
+// toString implemented the same as display but all elements are passed to
+// a string instead of cout
+
+string UndirectedGraph::toString() const {
+	string s = "";
+	if (no_vertices == 0) {
+		s = "V = empty set\nE = empty set";
+		return s;
+	}
+	s = "V = {";
+	for (int i = 0; i < no_vertices - 1; ++i)
+		s = s + "(" + to_string(nodes[i]->getValue()) + ", "
+		+ nodes[i]->getAirport() + "), ";
+	s = s + "(" + to_string(nodes[no_vertices - 1]->getValue()) + ", "
+		+ nodes[no_vertices - 1]->getAirport() + ")}\n";
+
+	if (no_edges == 0) {
+		s += "E = empty set";
+		return s;
+	}
+	s += "E = {";
+	for (int i = 0; i < no_edges - 1; ++i) {
+		s = s + "{{" + to_string(edges[i]->getSource()->getValue()) + ", "
+			+ to_string(edges[i]->getDest()->getValue()) + "}, "
+			+ to_string(edges[i]->getWeight()) + "}, ";
+	}
+	s = s + "{{" + to_string(edges[no_edges - 1]->getSource()->getValue())
+		+ ", " + to_string(edges[no_edges - 1]->getDest()->getValue())
+		+ "}, " + to_string(edges[no_edges - 1]->getWeight()) + "}}";
+	return s;
+}
+
+bool UndirectedGraph::clean() {
+	while (no_vertices > 0) {
+		if (removeVertex(*nodes[no_vertices - 1]) == false)
+			return false;
+	}
+	return true;
+}
+
 vector<vector<Edge> > UndirectedGraph::getPaths(Vertex &v,
 		unordered_map<int, bool> is_visited) {
 	// cout << "Calling getPaths for node " << v.getValue() << endl;
@@ -197,6 +285,40 @@ vector<vector<Edge> > UndirectedGraph::getPaths(Vertex &v,
 		}
 	}
 	return paths;
+}
+
+bool UndirectedGraph::isPath(Vertex& u, Vertex& v) {
+	vector< vector<Edge> > paths;
+	unordered_map<int, bool> isVisited;
+	for (int i = 0; i < no_vertices; ++i) {
+		int value = nodes[i]->getValue();
+		isVisited[value] = false;
+	}
+	paths = getPaths(u, isVisited);
+	for (vector<Edge> path : paths) {
+		if (path.back().getDest()->getValue() == v.getValue()) return true;
+	}
+	return false;
+}
+
+void UndirectedGraph::printAllPaths() {
+	vector< vector< Edge > > paths;
+	unordered_map<int, bool> isVisited;
+	for (int i = 0; i < no_vertices; ++i) {
+		int value = nodes[i]->getValue();
+		isVisited[value] = false;
+	}
+	for (int i = 0; i < no_vertices; ++i) {
+		paths = getPaths(*nodes[i], isVisited);
+		for (vector<Edge> path : paths) {
+			for (Edge& e : path) {
+				cout << e.getSource()->getAirport() << " -> ";
+			}
+			cout << path.back().getDest()->getAirport();
+			cout << endl;
+		}
+		paths.clear();
+	}
 }
 
 ostream& operator<<(ostream& output, const UndirectedGraph& udg) {

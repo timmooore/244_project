@@ -231,9 +231,25 @@ int main() {
 	dg2.printAllPaths();
 	
 	UndirectedGraph udg;
+	udg.addVertex(v1);
+	udg.addVertex(v2);
+	udg.addVertex(v3);
+	udg.addVertex(v4);
+	udg.addVertex(v5);
+	udg.addVertex(v6);
 
 	Edge e11(&v4, &v6, 99);
-		udg.addEdge(e11);
+
+	udg.addEdge(e1);
+	udg.addEdge(e2);
+	udg.addEdge(e3);
+	udg.addEdge(e5);
+	//udg.addEdge(e7);
+	udg.addEdge(e11);
+
+	cout << udg;
+
+	udg.printAllPaths();
 
 	return EXIT_SUCCESS;
 }
