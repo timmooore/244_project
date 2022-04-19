@@ -8,6 +8,7 @@
 #ifndef VERTEX_H_
 #define VERTEX_H_
 #include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -16,10 +17,12 @@ private:
 	static int id_gen;
 	int ID;
 	int value;
+	string airport;
 public:
-	Vertex(int = 0);
+	Vertex(int = 0, string = "");
 	int getID() const;
 	int getValue() const;
+	string getAirport() const;
 	void print() const;
 };
 

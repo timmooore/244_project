@@ -12,9 +12,10 @@ using namespace std;
 
 int Vertex::id_gen = 1;
 
-Vertex::Vertex(int value) {
+Vertex::Vertex(int value, string airport) {
 	ID = id_gen++;
 	this->value = value;
+	this->airport = airport;
 }
 
 int Vertex::getID() const {
@@ -25,6 +26,10 @@ int Vertex::getValue() const {
 	return value;
 }
 
+string Vertex::getAirport() const {
+	return airport;
+}
+
 void Vertex::print() const {
-	cout << value;
+	cout << value << ", " << airport;
 }

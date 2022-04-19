@@ -41,9 +41,11 @@ ostream& operator<<(ostream &output, const Graph &g) {
 	}
 	output << "V = {";
 	for (int i = 0; i < g.no_vertices - 1; ++i)
-		output << g.nodes[i]->getValue() << ", ";
+		output << "(" << g.nodes[i]->getValue() << ", " 
+		<< g.nodes[i]->getAirport() << "), ";
 
-	output << g.nodes[g.no_vertices - 1]->getValue() << "}" << endl;
+	output << "(" << g.nodes[g.no_vertices - 1]->getValue() << ", " 
+		<< g.nodes[g.no_vertices - 1]->getAirport() << ")}" << endl;
 
 	if (g.no_edges == 0) {
 		output << "E = empty set" << endl;

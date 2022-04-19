@@ -14,14 +14,18 @@
 int main() {
 	cout << "Creating vertices and edges..." << endl
 			<< "-----------------------------------" << endl;
-	Vertex v1(1);
-	Vertex v2(2);
-	Vertex v3(3);
-	Vertex v4(4);
-	Vertex v5(5);
-	Vertex v6(6);
+	Vertex v1(1, "Montreal");
+	Vertex v2(2, "Toronto");
+	Vertex v3(3, "Milan");
+	Vertex v4(4, "New York");
+	Vertex v5(5, "Los Angeles");
+	Vertex v6(6, "Tokyo");
 
-	Vertex v_arr[3] = { Vertex(10), Vertex(20), Vertex(30) };
+	Vertex v_arr[3] = { 
+		Vertex(10, "Paris"), 
+		Vertex(20, "Seoul"), 
+		Vertex(30, "Sydney")
+	};
 
 	Edge e1(&v1, &v2);
 	Edge e2(&v1, &v4, 1);

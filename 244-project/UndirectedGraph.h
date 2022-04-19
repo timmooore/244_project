@@ -14,15 +14,16 @@ class UndirectedGraph : public Graph {
 public:
 	UndirectedGraph();
 	UndirectedGraph(const UndirectedGraph&);
+	~UndirectedGraph();
 	virtual bool addVertex(Vertex &);
-	virtual bool addVertices(Vertex*, int);
+	/*virtual bool addVertices(Vertex*, int);
 	virtual bool searchVertex(const Vertex&);
 	virtual bool searchEdge(const Edge&);
 	virtual bool removeVertex(Vertex&);
 	virtual void display() const;
 	virtual bool addEdge(Edge&);
 	virtual bool remove(Edge&);
-	virtual string toString() const;
+	virtual string toString() const;*/
 
 
 };

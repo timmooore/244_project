@@ -11,7 +11,7 @@
 #include <vector>
 
 // Default constructor creates arrays of Vertex and Edge pointers
-// of sizes MAX_NO_VERTICES and MAX_NO_EDGES defined in DirectedGraph header
+// of sizes MAX_NO_VERTICES and MAX_NO_EDGES defined in Graph header
 
 DirectedGraph::DirectedGraph() {
 	nodes = new Vertex*[MAX_NO_VERTICES];
@@ -48,7 +48,7 @@ DirectedGraph::~DirectedGraph() {
 bool DirectedGraph::addVertex(Vertex &v) {
 	if (no_vertices >= MAX_NO_EDGES)
 		return false;
-	nodes[no_vertices++] = new Vertex(v.getValue());
+	nodes[no_vertices++] = new Vertex(v.getValue(), v.getAirport());
 	return true;
 }
 
@@ -59,7 +59,7 @@ bool DirectedGraph::addVertices(Vertex *vArray, int no_vertices) {
 	if (this->no_vertices + no_vertices >= MAX_NO_VERTICES)
 		return false;
 	for (int i = 0; i < no_vertices; ++i) {
-		nodes[this->no_vertices++] = new Vertex(vArray[i].getValue());
+		nodes[this->no_vertices++] = new Vertex(vArray[i].getValue(), vArray[i].getAirport());
 	}
 	return true;
 }
@@ -138,9 +138,11 @@ void DirectedGraph::display() const {
 	}
 	cout << "V = {";
 	for (int i = 0; i < no_vertices - 1; ++i)
-		cout << nodes[i]->getValue() << ", ";
+		cout << "(" << nodes[i]->getValue() << ", " 
+		<< nodes[i]->getAirport() << "), ";
 
-	cout << nodes[no_vertices - 1]->getValue() << "}" << endl;
+	cout << "(" << nodes[no_vertices - 1]->getValue() << ", " 
+		<< nodes[no_vertices - 1]->getAirport() << ")}" << endl;
 
 	if (no_edges == 0) {
 		cout << "E = empty set" << endl;
