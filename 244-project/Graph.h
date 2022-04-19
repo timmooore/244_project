@@ -9,6 +9,7 @@
 #define GRAPH_H_
 
 #include <string>
+#include <typeinfo>
 #include "Edge.h"
 
 #define MAX_NO_VERTICES 20
@@ -58,7 +59,7 @@ public:
 	// display the path that contains the edge;
 	// virtual void display(Edge& e) const = 0;
 
-	friend ostream& operator<<(ostream &,const Graph &);
+	friend ostream& operator<<(ostream &, const Graph &);
 };
 
 

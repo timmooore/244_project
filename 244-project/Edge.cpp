@@ -36,3 +36,11 @@ void Edge::print() const {
 	cout << "{(" << source->getValue() << ", " << dest->getValue()
 			<< "), " << weight << "}";
 }
+
+// printUD prints edges with curly "{}" brackets to denote that the order
+// of the edge is not important. Used for Undirected Graphs
+
+void Edge::printUD() const {
+	cout << "{{" << source->getValue() << ", " << dest->getValue()
+		<< "}, " << weight << "}";
+}

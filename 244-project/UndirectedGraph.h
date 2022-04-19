@@ -9,6 +9,8 @@
 #define UNDIRECTEDGRAPH_H_
 
 #include "Graph.h"
+#include <vector>
+#include <unordered_map>
 
 class UndirectedGraph : public Graph {
 public:
@@ -16,14 +18,16 @@ public:
 	UndirectedGraph(const UndirectedGraph&);
 	~UndirectedGraph();
 	virtual bool addVertex(Vertex &);
-	/*virtual bool addVertices(Vertex*, int);
+	virtual bool addVertices(Vertex*, int);
 	virtual bool searchVertex(const Vertex&);
 	virtual bool searchEdge(const Edge&);
 	virtual bool removeVertex(Vertex&);
 	virtual void display() const;
-	virtual bool addEdge(Edge&);
+	/*virtual bool addEdge(Edge&);
 	virtual bool remove(Edge&);
 	virtual string toString() const;*/
+	vector< vector<Edge> > getPaths(Vertex&, unordered_map<int, bool>);
+	friend ostream& operator<<(ostream&, const UndirectedGraph&);
 
 
 };

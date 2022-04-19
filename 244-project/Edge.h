@@ -22,6 +22,7 @@ public:
 	int getWeight() const;
 	void setWeight(const int);
 	void print() const;
+	void printUD() const;
 };
 
 
