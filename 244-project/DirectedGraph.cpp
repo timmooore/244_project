@@ -180,7 +180,6 @@ string DirectedGraph::toString() const {
 
 
 vector<vector<Edge> > DirectedGraph::getPaths(Vertex &v) {
-	// cout << "Calling getPaths for node " << v.getValue() << endl;
 	vector<vector<Edge> > paths;
 	vector<Edge> pt;
 	for (int i = 0; i < no_edges; ++i) {
@@ -188,7 +187,6 @@ vector<vector<Edge> > DirectedGraph::getPaths(Vertex &v) {
 			pt.push_back(*edges[i]);
 			paths.push_back(pt);
 			vector<vector<Edge> > childPaths = getPaths(*edges[i]->getDest());
-			// if (!childPaths.isEmpty())
 			for (int j = 0; j < childPaths.size(); ++j) {
 				for(Edge& e : childPaths[j]) pt.push_back(e);
 				paths.push_back(pt);
