@@ -15,6 +15,7 @@ class DirectedGraph : public Graph {
 public:
 	DirectedGraph();
 	DirectedGraph(const DirectedGraph&);
+	DirectedGraph(Vertex*, Edge*, int, int);
 	virtual ~DirectedGraph();
 	virtual bool addVertex(Vertex &v);
 	virtual bool addVertices(Vertex* vArray, int);

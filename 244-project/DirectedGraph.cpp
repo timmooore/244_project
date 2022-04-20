@@ -28,6 +28,20 @@ DirectedGraph::DirectedGraph(const DirectedGraph& dg) {
 	for (int i = 0; i < dg.no_edges; ++i) addEdge(*dg.edges[i]);
 }
 
+// Regular constructor with arguments
+
+DirectedGraph::DirectedGraph(
+	Vertex* v_arr,
+	Edge* e_arr,
+	int no_vertices,
+	int no_edges
+) {
+	nodes = new Vertex * [MAX_NO_VERTICES];
+	edges = new Edge * [MAX_NO_EDGES];
+	addVertices(v_arr, no_vertices);
+	for (int i = 0; i < no_edges; ++i) addEdge(e_arr[i]);
+}
+
 // Virtual destructor destroys all of the dynamically allocted vertices
 // and edges that are allocated in functions addVertex and addEdge,
 // the deletes the pointer arrays

@@ -16,6 +16,7 @@ class UndirectedGraph : public Graph {
 public:
 	UndirectedGraph();
 	UndirectedGraph(const UndirectedGraph&);
+	UndirectedGraph(Vertex*, Edge*, int, int);
 	~UndirectedGraph();
 	virtual bool addVertex(Vertex &);
 	virtual bool addVertices(Vertex*, int);
