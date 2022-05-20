@@ -10,4 +10,4 @@ This goal of this project was to implement an application of graph using several
 
 There are two implementations, one where the graphs are directed and another where they are undirected. In both cases, the most interesting features are the pathfinding algorithms, which use depth-first search and recursion to find all possible paths from a given city and the total miles of the path/
 
-
+_NOTE: The code is located in the directory 244-project_
